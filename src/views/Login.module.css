@@ -1,0 +1,23 @@
+.center {
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.emailinput input {
+  border-bottom-color: transparent;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.passwordinput input {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
