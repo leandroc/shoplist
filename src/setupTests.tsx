@@ -19,9 +19,13 @@ export const TEST_USER = {
   photoURL: 'https://placekitten.com/800/800',
 };
 
+export const AllProviders: React.FC = ({ children }) => {
+  return <UserContext.UserContextProvider>{children}</UserContext.UserContextProvider>;
+};
+
 export const UserHasSignedInProvider: React.FC = ({ children }) => {
   return (
-    <UserContext.UserContextProvider>
+    <AllProviders>
       <MemoryRouter initialEntries={['/']}>
         <Routes>
           <Route path="/login" element={<>user must sign in</>} />
@@ -29,13 +33,13 @@ export const UserHasSignedInProvider: React.FC = ({ children }) => {
           <Route path="/" element={children} />
         </Routes>
       </MemoryRouter>
-    </UserContext.UserContextProvider>
+    </AllProviders>
   );
 };
 
 export const UserHasSignedOutProvider: React.FC = ({ children }) => {
   return (
-    <UserContext.UserContextProvider>
+    <AllProviders>
       <MemoryRouter initialEntries={['/login']}>
         <Routes>
           <Route path="/login" element={children} />
@@ -43,7 +47,7 @@ export const UserHasSignedOutProvider: React.FC = ({ children }) => {
           <Route path="/" element={<>user has signed in</>} />
         </Routes>
       </MemoryRouter>
-    </UserContext.UserContextProvider>
+    </AllProviders>
   );
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 
 import {
-  UserHasSignedInProvider,
+  AllProviders,
   signInTestUser,
 
   // logout
@@ -11,9 +11,7 @@ import {
 import { Layout } from './Layout';
 
 const renderComponent = () => {
-  render(<Layout />, {
-    wrapper: UserHasSignedInProvider,
-  });
+  render(<Layout />, { wrapper: AllProviders });
 };
 
 describe('<Layout />', () => {

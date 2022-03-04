@@ -1,20 +1,22 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import UserEvent from '@testing-library/user-event';
 
-import { UserHasSignedInProvider, signInTestUser } from '../setupTests';
+// import { signInTestUser } from '../setupTests';
 
-import { Home } from './Home';
+import { EmptyList } from './EmptyList';
 
 const renderComponent = () => {
-  render(<Home />, { wrapper: UserHasSignedInProvider });
+  render(<EmptyList />);
 };
 
-describe('<Home />', () => {
+describe('<EmptyList />', () => {
   test('should render the component', async () => {
-    await signInTestUser();
+    // await signInTestUser();
 
     renderComponent();
+
+    const titleElement = await screen.findByText(/Nothing here :\//i);
+    expect(titleElement).toBeInTheDocument();
 
     const logoutButton = await screen.findByRole('button', { name: /Start with a new list/i });
     expect(logoutButton).toBeInTheDocument();
