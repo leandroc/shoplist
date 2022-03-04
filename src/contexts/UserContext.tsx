@@ -19,7 +19,10 @@ type UseSignInWithEmailAndPasswordReturnType = ReturnType<typeof useSignInWithEm
 export type UserContext = {
   user: ReturnType<typeof useAuthState>[0];
   loading: boolean;
-  error?: AuthStateReturnType[2] | UseSignInWithGoogleReturnType[3] | UseSignInWithEmailAndPasswordReturnType[3];
+  error?:
+    | AuthStateReturnType[2]
+    | UseSignInWithGoogleReturnType[3]
+    | UseSignInWithEmailAndPasswordReturnType[3];
   logout: typeof logout;
 
   signInWithGoogle: SignInWithPopupHook[0];

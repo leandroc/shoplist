@@ -2,37 +2,22 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import {
+  TEST_USER,
+  UserHasSignedOutProvider,
+  signInTestUser,
+  //logout
+} from '../setupTests';
 
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, logout } from '../firebase-config';
-
-import * as UserContext from '../contexts/UserContext';
 import { Login } from './Login';
 
-const TEST_USER_EMAIL = 'test.user@email.com';
-const TEST_USER_PASSWORD = '123456';
-
-const AllTheRequiredProviders: React.FC = ({ children }) => {
-  return (
-    <UserContext.UserContextProvider>
-      <MemoryRouter initialEntries={['/login']}>
-        <Routes>
-          <Route path="/login" element={children} />
-          <Route path="/" element={<>user has signed in</>} />
-        </Routes>
-      </MemoryRouter>
-    </UserContext.UserContextProvider>
-  );
-};
-
 const renderComponent = () => {
-  render(<Login />, { wrapper: AllTheRequiredProviders });
+  render(<Login />, { wrapper: UserHasSignedOutProvider });
 };
 
 describe('<Login />', () => {
   test('should render the component and show loading state', async () => {
-    await logout();
+    // await logout();
     renderComponent();
 
     const el = await screen.findByText(/carregando.../i);
@@ -40,8 +25,8 @@ describe('<Login />', () => {
   });
 
   test('should redirect to home if user is signed in', async () => {
-    await logout();
-    await signInWithEmailAndPassword(auth, TEST_USER_EMAIL, TEST_USER_PASSWORD);
+    // await logout();
+    await signInTestUser();
 
     renderComponent();
 
@@ -50,7 +35,7 @@ describe('<Login />', () => {
   });
 
   test('should allow to login with email', async () => {
-    await logout();
+    // await logout();
     renderComponent();
 
     const emailInput = await screen.findByLabelText(/email address/i);
@@ -65,8 +50,8 @@ describe('<Login />', () => {
     expect(emailButton).toBeInTheDocument();
     expect(emailButton).toHaveAttribute('type', 'submit');
 
-    UserEvent.type(emailInput, TEST_USER_EMAIL);
-    UserEvent.type(passwordInput, TEST_USER_PASSWORD);
+    UserEvent.type(emailInput, TEST_USER.email);
+    UserEvent.type(passwordInput, TEST_USER.password);
     UserEvent.click(emailButton);
 
     const loadingElement = await screen.findByText(/carregando.../i);
@@ -78,7 +63,7 @@ describe('<Login />', () => {
 
   // couldn't find a easy way to test this
   test.skip('should allow to login with google', async () => {
-    await logout();
+    // await logout();
     renderComponent();
 
     const gmailButton = await screen.findByRole('button', {

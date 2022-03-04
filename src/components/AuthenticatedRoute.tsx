@@ -2,6 +2,8 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 import { useUserContext } from '../contexts/UserContext';
 
+import { Layout } from './Layout';
+
 export type AuthenticatedRouteProps = {
   children: JSX.Element;
 };
@@ -13,20 +15,20 @@ function AuthenticatedRouteComponent({ children }: AuthenticatedRouteComponentPr
   const { user, loading, error } = useUserContext();
 
   if (loading) {
-    return <>Carregando...</>;
+    return <Layout>Carregando...</Layout>;
   }
 
   if (error) {
     console.log('error', error);
 
-    return <>Ocorreu um erro!</>;
+    return <Layout>Ocorreu um erro!</Layout>;
   }
 
   if (!user) {
     return <Navigate replace state={{ from: location }} to={{ pathname: '/login' }} />;
   }
 
-  return children;
+  return <Layout>{children}</Layout>;
 }
 
 export const AuthenticatedRoute = AuthenticatedRouteComponent;

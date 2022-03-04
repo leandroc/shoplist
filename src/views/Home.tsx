@@ -2,6 +2,8 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 import { useUserContext } from '../contexts/UserContext';
 
+import {Header} from '../components/Header'
+
 function HomeComponent() {
   const location = useLocation();
   const { user, logout } = useUserContext();
@@ -12,6 +14,7 @@ function HomeComponent() {
 
   return (
     <>
+    <Header />
       {user?.displayName}
 
       <button onClick={logout}>logout</button>

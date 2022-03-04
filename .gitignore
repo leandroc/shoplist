@@ -30,3 +30,4 @@ firebase-debug.log*
 storage-debug.log*
 functions-debug.log*
 ui-debug.log*
+/firebase-export-*
