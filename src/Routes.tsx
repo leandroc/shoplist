@@ -16,6 +16,7 @@ function RoutesComponent() {
           <Route index element={<Home />} />
         </Route>
       </Route>
+
       <Route path="/login" element={<Login />} />
 
       <Route path="*" element={<>404</>} />
