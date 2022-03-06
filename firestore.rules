@@ -2,18 +2,24 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      allow read, write: if false;
+      allow read, write: if isSignedIn();
+    }
+
+    match /lists/{item} {
+      // allow read only from signed in user
+      allow read: if isSignedIn() && isOwner(resource.data.userId);
+      allow write: if isSignedIn() && isOwner(incomingData().id) && isRequiredFilled(incomingData(), ['name']);
     }
 
     // is user logged in
-    // function isSignedIn() {
-    //  return request.auth != null;
-    // }
+    function isSignedIn() {
+     return request.auth != null;
+    }
 
     // is user the document owner
-    // function isOwner(userId) {
-    // 	return request.auth.uid == userId
-    // }
+    function isOwner(userId) {
+    	return request.auth.uid == userId
+    }
 
     // the data that exists in database
     // function existingData() {
@@ -21,13 +27,13 @@ service cloud.firestore {
     // }
 
     // the data from incoming request
-    // function incomingData() {
-    //   return request.resource.data;
-    // }
+    function incomingData() {
+      return request.resource.data;
+    }
 
     // the required input is filled
-    // function isRequiredFilled(data, requiredKeys) {
-    //   return data.keys().hasAll(requiredKeys);
-    // }
+    function isRequiredFilled(data, requiredKeys) {
+      return data.keys().hasAll(requiredKeys);
+    }
   }
 }

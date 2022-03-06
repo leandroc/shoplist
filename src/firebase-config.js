@@ -33,7 +33,7 @@ export const getItemsCollection = () => collection(db, 'items');
 
 if (process.env.NODE_ENV !== 'production') {
   connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
-  connectFirestoreEmulator(db, 'http://localhost:8080', { disableWarnings: true });
+  connectFirestoreEmulator(db, 'localhost', 8080, { disableWarnings: true });
 }
 
 if (process.env.NODE_ENV === 'test') {
