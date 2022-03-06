@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import UserEvent from '@testing-library/user-event';
 
-import { UserHasSignedInProvider, signInTestUser } from '../setupTests';
+import { UserHasSignedInProvider } from '../setupTests';
 
 import { Home } from './Home';
 
@@ -11,12 +10,10 @@ const renderComponent = () => {
 };
 
 describe('<Home />', () => {
-  test('should render the component', async () => {
-    await signInTestUser();
-
+  test('should render the empty component', async () => {
     renderComponent();
 
-    const logoutButton = await screen.findByRole('button', { name: /Start with a new list/i });
-    expect(logoutButton).toBeInTheDocument();
+    const createButton = await screen.findByRole('button', { name: /Start with a new list/i });
+    expect(createButton).toBeInTheDocument();
   });
 });
