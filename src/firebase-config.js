@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signOut, connectAuthEmulator } from 'firebase/auth';
+import { getFirestore, collection, connectFirestoreEmulator } from 'firebase/firestore';
 
 let firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -22,11 +23,17 @@ const app = initializeApp(firebaseConfig);
 export default app;
 
 export const auth = getAuth(app);
-
 export const logout = () => signOut(auth);
+
+export const db = getFirestore(app);
+export const getUsersCollection = () => collection(db, 'users');
+export const getListsCollection = () => collection(db, 'lists');
+export const getItemsCollection = () => collection(db, 'items');
+
 
 if (process.env.NODE_ENV !== 'production') {
   connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+  connectFirestoreEmulator(db, 'http://localhost:8080', { disableWarnings: true });
 }
 
 if (process.env.NODE_ENV === 'test') {
