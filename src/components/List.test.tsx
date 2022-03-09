@@ -41,13 +41,13 @@ describe('<List />', () => {
     expect(items.length).toBe(data.length);
 
     items.forEach(async (item, index) => {
-      const { getByText, findByRole } = within(item);
+      const { getByText, queryByRole } = within(item);
 
       const itemData = data[index];
 
       getByText(itemData.name);
 
-      const editButton = await findByRole('button', { name: /edit/i });
+      const editButton = queryByRole('button', { name: /edit/i });
       expect(editButton).not.toBeInTheDocument();
     });
   });

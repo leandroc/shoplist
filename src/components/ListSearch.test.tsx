@@ -19,6 +19,7 @@ describe('<ListSearch />', () => {
 
     const searchInput = await screen.findByTestId('list.name');
     expect(searchInput).toBeInTheDocument();
+    expect(searchInput).toBeDisabled();
 
     const addNewListButton = await screen.findByRole('button', { name: 'Create a new list' });
     expect(addNewListButton).toBeInTheDocument();

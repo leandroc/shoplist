@@ -14,6 +14,7 @@ function ListSearchComponent() {
             type="search"
             placeholder="Search by list name"
             aria-label="Search by list name"
+            disabled
           />
         </Col>
 
