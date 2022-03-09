@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import cx from 'classnames';
 
+import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
@@ -32,10 +33,6 @@ function LoginComponent() {
     return <>carregando...</>;
   }
 
-  if (error) {
-    return <>erro: {error.message}</>;
-  }
-
   if (user) {
     return <Navigate replace state={{ from: location }} to={{ pathname: '/' }} />;
   }
@@ -44,6 +41,8 @@ function LoginComponent() {
     <div className={styles.center}>
       <div className={cx(['p-3', styles.container])}>
         <h2 className="text-center pb-3">Sign in</h2>
+
+        <Alert variant="danger">Email or Password not found</Alert>
 
         <Form className="pb-4" onSubmit={handleOnSubmit}>
           <FloatingLabel className={styles.emailinput} controlId="email" label="Email address">

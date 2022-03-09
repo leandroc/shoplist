@@ -17,8 +17,6 @@ function AuthenticatedRouteComponent({ children }: AuthenticatedRouteComponentPr
   }
 
   if (error) {
-    console.log('error', error);
-
     return <>Ocorreu um erro!</>;
   }
 

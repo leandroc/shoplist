@@ -1,3 +1,18 @@
+export type Scalars = {
+  String: string;
+  Number: number;
+  Boolean: boolean;
+  Map: {};
+  Array: [];
+  Null: null;
+  Timestamp: number;
+  Geopoint: { latitude: number, longitude: number };
+  /**
+   * Document path
+   */
+  Reference: string;
+}
+
 export type DocumentUID = string;
 
 export type Currency = number;

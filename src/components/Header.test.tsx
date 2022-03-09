@@ -4,8 +4,8 @@ import UserEvent from '@testing-library/user-event';
 
 import {
   UserHasSignedInProvider,
-  signInTestUser,
-  TEST_USER,
+  signInEmptyUser,
+  TEST_USERS,
   // logout
 } from '../setupTests';
 
@@ -19,7 +19,7 @@ const renderComponent = () => {
 
 describe('<Header />', () => {
   test('should render the component', async () => {
-    await signInTestUser();
+    await signInEmptyUser();
 
     renderComponent();
 
@@ -27,7 +27,7 @@ describe('<Header />', () => {
     expect(titleElement).toBeInTheDocument();
 
     const avatarImageElement = await screen.findByRole('img');
-    expect(avatarImageElement).toHaveAttribute('src', TEST_USER.photoURL);
+    expect(avatarImageElement).toHaveAttribute('src', TEST_USERS.EMPTY.photoURL);
 
     const avatarButtonElement = await screen.findByTestId('user-options');
     UserEvent.click(avatarButtonElement);

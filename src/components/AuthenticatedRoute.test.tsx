@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import {
   UserHasSignedInProvider,
-  signInTestUser,
+  signInEmptyUser,
   // logout
 } from '../setupTests';
 
@@ -22,7 +22,6 @@ const renderComponent = () => {
 
 describe('<AuthenticatedRoute />', () => {
   test('should render the component and show loading state', async () => {
-    // await logout();
     renderComponent();
 
     const el = await screen.findByText(/carregando.../i);
@@ -30,7 +29,6 @@ describe('<AuthenticatedRoute />', () => {
   });
 
   test('should redirect to login if user is not signed in', async () => {
-    // await logout();
     renderComponent();
 
     const el = await screen.findByText(/user must sign in/i);
@@ -38,8 +36,7 @@ describe('<AuthenticatedRoute />', () => {
   });
 
   test('should render the children component', async () => {
-    // await logout();
-    await signInTestUser();
+    await signInEmptyUser();
 
     renderComponent();
 

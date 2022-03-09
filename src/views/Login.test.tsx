@@ -3,9 +3,9 @@ import { render, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 
 import {
-  TEST_USER,
+  TEST_USERS,
   UserHasSignedOutProvider,
-  signInTestUser,
+  signInEmptyUser,
   //logout
 } from '../setupTests';
 
@@ -17,7 +17,6 @@ const renderComponent = () => {
 
 describe('<Login />', () => {
   test('should render the component and show loading state', async () => {
-    // await logout();
     renderComponent();
 
     const el = await screen.findByText(/carregando.../i);
@@ -25,8 +24,7 @@ describe('<Login />', () => {
   });
 
   test('should redirect to home if user is signed in', async () => {
-    // await logout();
-    await signInTestUser();
+    await signInEmptyUser();
 
     renderComponent();
 
@@ -35,7 +33,6 @@ describe('<Login />', () => {
   });
 
   test('should allow to login with email', async () => {
-    // await logout();
     renderComponent();
 
     const emailInput = await screen.findByLabelText(/email address/i);
@@ -50,8 +47,8 @@ describe('<Login />', () => {
     expect(emailButton).toBeInTheDocument();
     expect(emailButton).toHaveAttribute('type', 'submit');
 
-    UserEvent.type(emailInput, TEST_USER.email);
-    UserEvent.type(passwordInput, TEST_USER.password);
+    UserEvent.type(emailInput, TEST_USERS.EMPTY.email);
+    UserEvent.type(passwordInput, TEST_USERS.EMPTY.password);
     UserEvent.click(emailButton);
 
     const loadingElement = await screen.findByText(/carregando.../i);
@@ -61,9 +58,30 @@ describe('<Login />', () => {
     expect(userHasSignInElement).toBeInTheDocument();
   });
 
+  test('should show an alert if email or password is wrong', async () => {
+    renderComponent();
+
+    const emailInput = await screen.findByLabelText(/email address/i);
+    UserEvent.clear(emailInput);
+
+    const passwordInput = await screen.findByLabelText(/password/i);
+    UserEvent.clear(passwordInput);
+
+    const emailButton = await screen.findByRole('button', { name: 'Sign in', exact: true });
+
+    UserEvent.type(emailInput, 'this.email.doesnt.exist@email.com');
+    UserEvent.type(passwordInput, 'wrong.password');
+    UserEvent.click(emailButton);
+
+    const loadingElement = await screen.findByText(/carregando.../i);
+    expect(loadingElement).toBeInTheDocument();
+
+    const errorElement = await screen.findByText(/Email or Password not found/i);
+    expect(errorElement).toBeInTheDocument();
+  });
+
   // couldn't find a easy way to test this
   test.skip('should allow to login with google', async () => {
-    // await logout();
     renderComponent();
 
     const gmailButton = await screen.findByRole('button', {

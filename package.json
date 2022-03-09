@@ -26,11 +26,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:emulator": "firebase emulators:exec 'npm run start' --only=auth,firestore,storage --import=./scripts/firebase/emulators/data --export-on-exit --ui",
+    "start:emulator": "firebase emulators:exec 'npm run start' --only=auth,firestore,storage --import=./scripts/firebase/emulators/data --ui",
     "build": "react-scripts build",
-    "build:emulator": "firebase emulators:exec 'npm run build' --only=auth,firestore,storage --import=./scripts/firebase/emulators/data --export-on-exit",
-    "test": "react-scripts test",
-    "test:emulator": "firebase emulators:exec 'npm run test' --only=auth,firestore,storage --import=./scripts/firebase/emulators/data --export-on-exit",
+    "test": "react-scripts test --env=./jest.override.js --detectOpenHandles",
+    "test:emulator": "firebase emulators:exec 'npm run test -- --coverage' --only=auth,firestore,storage --import=./scripts/firebase/emulators/data --ui",
     "eject": "react-scripts eject",
     "emulators": "firebase emulators:start --import=./scripts/firebase/emulators/data --export-on-exit"
   },
@@ -53,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "@firebase/testing": "^0.20.11"
+    "@firebase/testing": "^0.20.11",
+    "jest-environment-jsdom": "^27.5.1"
   }
 }

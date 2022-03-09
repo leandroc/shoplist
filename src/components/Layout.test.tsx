@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import {
   AllProviders,
-  signInTestUser,
+  signInEmptyUser
 
   // logout
 } from '../setupTests';
@@ -16,7 +16,7 @@ const renderComponent = () => {
 
 describe('<Layout />', () => {
   test('should render the component', async () => {
-    await signInTestUser();
+    await signInEmptyUser();
 
     renderComponent();
 
