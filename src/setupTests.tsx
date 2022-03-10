@@ -47,31 +47,49 @@ export const AllProviders: React.FC = ({ children }) => {
   return <UserContext.UserContextProvider>{children}</UserContext.UserContextProvider>;
 };
 
-export const UserHasSignedInProvider: React.FC = ({ children }) => {
+export const RoutesWrapper = ({
+  routes,
+  initialEntries = ['/'],
+}: {
+  routes: { path: string; element: React.ReactNode }[];
+  initialEntries?: string[];
+}) => {
   return (
     <AllProviders>
-      <MemoryRouter initialEntries={['/']}>
+      <MemoryRouter initialEntries={initialEntries}>
         <Routes>
-          <Route path="/login" element={<>user must sign in</>} />
-
-          <Route path="/" element={children} />
+          {routes.map((item) => (
+            <Route key={item.path} path={item.path} element={item.element} />
+          ))}
         </Routes>
       </MemoryRouter>
     </AllProviders>
   );
 };
 
+export const UserHasSignedInProvider: React.FC = ({ children }) => {
+  return (
+    <RoutesWrapper
+      routes={[
+        { path: '/login', element: <>user must sign in</> },
+        {
+          path: '/',
+          element: children,
+        },
+      ]}
+    />
+  );
+};
+
 export const UserHasSignedOutProvider: React.FC = ({ children }) => {
   return (
-    <AllProviders>
-      <MemoryRouter initialEntries={['/login']}>
-        <Routes>
-          <Route path="/login" element={children} />
-
-          <Route path="/" element={<>user has signed in</>} />
-        </Routes>
-      </MemoryRouter>
-    </AllProviders>
+    <RoutesWrapper
+      initialEntries={['/login']}
+      routes={[
+        { path: '/', element: <>user has signed in</> },
+        { path: '/login', element: children },
+      ]}
+    />
   );
 };
 
