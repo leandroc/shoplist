@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import Container from 'react-bootstrap/Container';
 
 import { useLists } from '../hooks/useLists';
@@ -8,6 +10,7 @@ import { List } from '../components/List';
 
 function HomeComponent() {
   const [data, loading, error] = useLists();
+  const navigate = useNavigate();
 
   if (loading) {
     return <>Carregando...</>;
@@ -24,7 +27,7 @@ function HomeComponent() {
   return (
     <Container fluid>
       <div className="pt-3 pb-3">
-        <ListSearch />
+        <ListSearch onClick={() => navigate('/list')} />
       </div>
 
       <List
@@ -33,7 +36,7 @@ function HomeComponent() {
           name: item.name,
           sub: `Created at ${item.createdAt} | Total: $${item.totalValue}`,
         }))}
-        onClick={(item) => console.log('clicou', item)}
+        onClick={(item) => navigate(`/list/${item.key}`)}
       />
     </Container>
   );

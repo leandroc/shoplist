@@ -2,16 +2,25 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 
-import {  RoutesWrapper, signInEmptyUser, signInCreateUser, signInReadUser } from '../setupTests';
+import {
+  RoutesWrapper,
+  signInEmptyUser,
+  signInCreateUser,
+  signInReadUser,
+  signInUpdateUser,
+} from '../setupTests';
 
 import { Home } from './Home';
-
 
 const UserHasSignedInProvider: React.FC = ({ children }) => {
   return (
     <RoutesWrapper
       routes={[
         { path: '/login', element: <>user must sign in</> },
+        {
+          path: '/list/:listId',
+          element: <>edition page</>,
+        },
         {
           path: '/list',
           element: <>creation page</>,
@@ -70,11 +79,25 @@ describe('<Home />', () => {
 
     await screen.findByText(/carregando.../i);
 
-    const createButton = await screen.findByRole('button', { name: /Create a new list/i })
+    const createButton = await screen.findByRole('button', { name: /Create a new list/i });
     expect(createButton).toBeInTheDocument();
 
     UserEvent.click(createButton);
 
-    // await screen.findByText('creation page')
+    await screen.findByText('creation page');
+  });
+
+  test('should redirect to edition page', async () => {
+    await signInUpdateUser();
+    renderComponent();
+
+    await screen.findByText(/carregando.../i);
+
+    const editButton = (await screen.findAllByRole('button', { name: /Edit/i }))[0];
+    expect(editButton).toBeInTheDocument();
+
+    UserEvent.click(editButton);
+
+    await screen.findByText('edition page');
   });
 });
