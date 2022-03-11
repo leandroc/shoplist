@@ -3,7 +3,13 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-function ListSearchComponent() {
+export type ListSearchProps = {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+type ListSearchComponentProps = ListSearchProps;
+
+function ListSearchComponent({ onClick }: ListSearchComponentProps) {
   return (
     <Form>
       <Row>
@@ -19,7 +25,7 @@ function ListSearchComponent() {
         </Col>
 
         <Col xs="auto">
-          <Button>Create a new list</Button>
+          <Button onClick={onClick}>Create a new list</Button>
         </Col>
       </Row>
     </Form>
