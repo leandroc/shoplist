@@ -71,6 +71,6 @@ describe('<App />', () => {
 
     UserEvent.click(createButton);
 
-    await screen.findByText('list details page');
+    await screen.findByRole('textbox', { name: /List name/i });
   });
 });

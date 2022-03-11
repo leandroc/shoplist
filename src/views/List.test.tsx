@@ -1,52 +1,66 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-// import UserEvent from '@testing-library/user-event';
+import UserEvent from '@testing-library/user-event';
 
 import {
-  // RoutesWrapper,
-  // signInEmptyUser,
-  // signInCreateUser,
+  RoutesWrapper,
+  signInEmptyUser,
+  signInCreateUser,
   // signInReadUser,
   // signInUpdateUser,
 } from '../setupTests';
 
 import { List } from './List';
 
-/*
 const UserHasSignedInProvider: React.FC = ({ children }) => {
   return (
     <RoutesWrapper
+      initialEntries={['/list']}
       routes={[
-        { path: '/login', element: <>user must sign in</> },
         {
           path: '/list/:listId',
           element: <>edition page</>,
         },
         {
           path: '/list',
-          element: <>creation page</>,
+          element: children,
         },
         {
           path: '/',
-          element: children,
+          element: <>home</>,
         },
       ]}
     />
   );
 };
-*/
 
 const renderComponent = () => {
-  render(
-    <List />
-    // , { wrapper: UserHasSignedInProvider }
-  );
+  render(<List />, { wrapper: UserHasSignedInProvider });
 };
 
 describe('<List />', () => {
-  test('should render the empty component', async () => {
+  test('should render the form', async () => {
+    await signInEmptyUser();
+
     renderComponent();
 
-    await screen.findByText(/list details page/i);
+    await screen.findByRole('textbox', { name: /List name/i });
+    await screen.findByRole('button', { name: /Save/i });
+  });
+
+  test('should create a list', async () => {
+    await signInCreateUser();
+
+    renderComponent();
+
+    const listName = await screen.findByRole('textbox', { name: /List name/i });
+    UserEvent.clear(listName);
+
+    const saveButton = await screen.findByRole('button', { name: /Save/i });
+    UserEvent.click(saveButton);
+
+    await screen.findByText(/carregando.../i);
+
+    await screen.findByText(/edition page/i)
   });
 });

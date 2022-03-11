@@ -1,60 +1,79 @@
-export type Scalars = {
+import { Timestamp, GeoPoint } from 'firebase/firestore';
+
+/**
+ * the result of dayjs().format()
+ *
+ * ex: 2022-03-11T17:08:58-04:00
+ */
+type DayJSFormat = string;
+
+export type Scalars<T = any> = {
   String: string;
   Number: number;
   Boolean: boolean;
-  Map: {};
-  Array: [];
-  Null: null;
-  Timestamp: number;
-  Geopoint: { latitude: number, longitude: number };
+  Map: T[];
+  Array: Array<T>;
+  Timestamp: Timestamp;
+  Geopoint: GeoPoint;
   /**
    * Document path
    */
   Reference: string;
-}
+};
 
-export type DocumentUID = string;
+export type DocumentUUID = Scalars['String'];
 
-export type Currency = number;
+export type Currency = Scalars['Number'];
 
-export type User = {
-  uid: DocumentUID;
-  createdAt: string;
-  updatedAt: string;
+export type UserInput = {
+  displayName: Scalars['String'];
+  email: Scalars['String'];
+  photoURL: Scalars['String'];
+};
 
-  displayName: string;
-  email: string;
-  photoURL: string;
+export type User = UserInput & {
+  uid: DocumentUUID;
+  createdAt: DayJSFormat;
+  updatedAt: DayJSFormat;
+
+  // displayName: Scalars['String'];
+  // email: Scalars['String'];
+  // photoURL: Scalars['String'];
   totalSpent: Currency;
 };
 
 export type MaybeUser = User | null;
 
-export type List = {
-  uid: DocumentUID;
-  createdAt: string;
-  updatedAt: string;
+export type ListInput = {
+  name: Scalars['String'];
+};
 
-  userId: DocumentUID;
+export type List = ListInput & {
+  uid: DocumentUUID;
+  createdAt: DayJSFormat;
+  updatedAt: DayJSFormat;
 
-  name: string;
-  itemsCount: number;
+  userId: DocumentUUID;
+
+  itemsCount: Scalars['Number'];
   totalValue: Currency;
 };
 
 export type MaybeList = List | null;
 
-export type Item = {
-  uid: string;
-  createdAt: string;
-  updatedAt: string;
-
-  userId: DocumentUID;
-  listId: DocumentUID;
-
-  name: string;
-  quantity: number;
+export type ItemInput = {
+  name: Scalars['String'];
+  quantity: Scalars['Number'];
   value: Currency;
+};
+
+export type Item = ItemInput & {
+  uid: DocumentUUID;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+
+  userId: DocumentUUID;
+  listId: DocumentUUID;
 };
 
 export type MaybeItem = Item | null;
