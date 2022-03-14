@@ -1,4 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import cx from 'classnames';
 
 import Alert from 'react-bootstrap/Alert';
@@ -10,23 +11,20 @@ import { useUserContext } from '../contexts/UserContext';
 
 import styles from './Login.module.css';
 
+type LoginForm = {
+  email: string;
+  password: string;
+};
+
 function LoginComponent() {
   const location = useLocation();
   const { user, signInWithGoogle, signInWithEmailAndPassword, loading, error } = useUserContext();
+  const { register, handleSubmit } = useForm<LoginForm>({
+    defaultValues: { email: '', password: '' },
+  });
 
-  const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-
-    const emailElement = event.currentTarget.elements.namedItem('email') as HTMLInputElement;
-    const emailValue = emailElement?.value;
-
-    const passwordElement = event.currentTarget.elements.namedItem('password') as HTMLInputElement;
-    const passwordValue = passwordElement?.value;
-
-    if (emailValue && passwordValue) {
-      signInWithEmailAndPassword(emailValue, passwordValue);
-    }
+  const handleOnSubmit = (values: LoginForm) => {
+    signInWithEmailAndPassword(values.email, values.password);
   };
 
   if (loading) {
@@ -42,11 +40,15 @@ function LoginComponent() {
       <div className={cx(['p-3', styles.container])}>
         <h2 className="text-center pb-3">Sign in</h2>
 
-        <Alert variant="danger">Email or Password not found</Alert>
+        {!error ? null : <Alert variant="danger">Email or Password not found</Alert>}
 
-        <Form className="pb-4" onSubmit={handleOnSubmit}>
+        <Form className="pb-4" onSubmit={handleSubmit((values) => handleOnSubmit(values))}>
           <FloatingLabel className={styles.emailinput} controlId="email" label="Email address">
-            <Form.Control type="email" placeholder="name@example.com" />
+            <Form.Control
+              {...register('email', { required: 'Required field' })}
+              type="email"
+              placeholder="name@example.com"
+            />
           </FloatingLabel>
 
           <FloatingLabel
@@ -54,7 +56,11 @@ function LoginComponent() {
             controlId="password"
             label="Password"
           >
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control
+              {...register('password', { required: 'Required field' })}
+              type="password"
+              placeholder="Password"
+            />
           </FloatingLabel>
 
           <Button className="w-100" variant="primary" type="submit" size="lg">
