@@ -2,6 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 
+import faker from '@faker-js/faker'
+
 import {
   RoutesWrapper,
   signInEmptyUser,
@@ -19,7 +21,7 @@ const UserHasSignedInProvider: React.FC = ({ children }) => {
       routes={[
         {
           path: '/list/:listId',
-          element: <>edition page</>,
+          element: <>page to edit</>,
         },
         {
           path: '/list',
@@ -53,14 +55,17 @@ describe('<List />', () => {
 
     renderComponent();
 
+    const newListName = faker.lorem.sentence();
+
     const listName = await screen.findByRole('textbox', { name: /List name/i });
     UserEvent.clear(listName);
+    UserEvent.type(listName, newListName);
 
     const saveButton = await screen.findByRole('button', { name: /Save/i });
     UserEvent.click(saveButton);
 
     await screen.findByText(/carregando.../i);
 
-    await screen.findByText(/edition page/i)
+    await screen.findByText(/page to edit/i)
   });
 });

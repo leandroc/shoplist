@@ -1,20 +1,27 @@
-import {Navigate} from 'react-router-dom'
+import { Navigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 import { useListCreate } from '../hooks/useListCreate';
 
+type ListForm = {
+  list: {
+    name: string;
+  }
+}
+
 function ListComponent() {
-
   const [mutate, { data, loading, error }] = useListCreate();
+  const { register, handleSubmit } = useForm<ListForm>({
+    defaultValues: {
+      list: { name: '' }
+    }
+  });
 
-  const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    await mutate({
-      name: 'LISTA AQUI',
-    });
+  const handleOnSubmit = async (values: ListForm) => {
+    await mutate(values.list);
   };
 
   if (loading) {
@@ -26,14 +33,14 @@ function ListComponent() {
   }
 
   if (data?.uid) {
-    return <Navigate to={`/list/${data.uid}`} />
+    return <Navigate to={`/list/${data.uid}`} />;
   }
 
   return (
-    <Form onSubmit={handleOnSubmit}>
+    <Form onSubmit={handleSubmit((values) => handleOnSubmit(values))}>
       <Form.Group controlId="list.name">
         <Form.Label>List name</Form.Label>
-        <Form.Control placeholder="Enter list name" />
+        <Form.Control {...register('list.name')} placeholder="Enter list name" />
       </Form.Group>
 
       <Button type="submit">Save</Button>
