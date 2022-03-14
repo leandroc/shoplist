@@ -11,7 +11,7 @@ function HeaderComponent() {
   return (
     <Navbar variant="dark" bg="primary">
       <Container fluid>
-        <Navbar.Brand href="#home">Shoplist</Navbar.Brand>
+        <Navbar.Brand href="/">Shoplist</Navbar.Brand>
 
         <Dropdown className="text-end">
           <Dropdown.Toggle aria-label="See options" data-testid="user-options">

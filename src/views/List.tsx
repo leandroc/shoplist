@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
+import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
@@ -9,15 +10,15 @@ import { useListCreate } from '../hooks/useListCreate';
 type ListForm = {
   list: {
     name: string;
-  }
-}
+  };
+};
 
 function ListComponent() {
   const [mutate, { data, loading, error }] = useListCreate();
   const { register, handleSubmit } = useForm<ListForm>({
     defaultValues: {
-      list: { name: '' }
-    }
+      list: { name: '' },
+    },
   });
 
   const handleOnSubmit = async (values: ListForm) => {
@@ -37,14 +38,16 @@ function ListComponent() {
   }
 
   return (
-    <Form onSubmit={handleSubmit((values) => handleOnSubmit(values))}>
-      <Form.Group controlId="list.name">
-        <Form.Label>List name</Form.Label>
-        <Form.Control {...register('list.name')} placeholder="Enter list name" />
-      </Form.Group>
+    <Container fluid>
+      <Form onSubmit={handleSubmit((values) => handleOnSubmit(values))}>
+        <Form.Group controlId="list.name">
+          <Form.Label>List name</Form.Label>
+          <Form.Control {...register('list.name')} placeholder="Enter list name" />
+        </Form.Group>
 
-      <Button type="submit">Save</Button>
-    </Form>
+        <Button type="submit">Save</Button>
+      </Form>
+    </Container>
   );
 }
 

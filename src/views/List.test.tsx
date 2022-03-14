@@ -50,7 +50,7 @@ describe('<List />', () => {
     await screen.findByRole('button', { name: /Save/i });
   });
 
-  test('should create a list', async () => {
+  test('should create a list and redirect to the editing page', async () => {
     await signInCreateUser();
 
     renderComponent();
