@@ -12,7 +12,7 @@ import {
   // signInUpdateUser,
 } from '../setupTests';
 
-import { List } from './List';
+import { Create } from './Create';
 
 const UserHasSignedInProvider: React.FC = ({ children }) => {
   return (
@@ -37,10 +37,10 @@ const UserHasSignedInProvider: React.FC = ({ children }) => {
 };
 
 const renderComponent = () => {
-  render(<List />, { wrapper: UserHasSignedInProvider });
+  render(<Create />, { wrapper: UserHasSignedInProvider });
 };
 
-describe('<List />', () => {
+describe('<Create />', () => {
   test('should render the form', async () => {
     await signInEmptyUser();
 
