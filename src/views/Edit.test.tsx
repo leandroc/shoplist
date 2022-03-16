@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 
-import faker from '@faker-js/faker'
+import faker from '@faker-js/faker';
 
 import {
   RoutesWrapper,
@@ -14,10 +14,10 @@ import {
 
 import { Edit } from './Edit';
 
-const UserHasSignedInProvider: React.FC = ({ children }) => {
+const UserHasSignedInProvider: React.FC<{ listId?: string }> = ({ listId, children }) => {
   return (
     <RoutesWrapper
-      initialEntries={['/list/RHtycU1XmYg8aUvkNor5']}
+      initialEntries={[!listId ? '/' : `/list/${listId}`]}
       routes={[
         {
           path: '/list/:listId',
@@ -36,17 +36,40 @@ const UserHasSignedInProvider: React.FC = ({ children }) => {
   );
 };
 
-const renderComponent = () => {
-  render(<Edit />, { wrapper: UserHasSignedInProvider });
+const renderComponent = (listId?: string) => {
+  render(<Edit />, { wrapper: (props) => <UserHasSignedInProvider listId={listId} {...props} /> });
 };
 
 describe('<Edit />', () => {
-  test('should render the form', async () => {
+  test.skip('should render the form with an empty items list', async () => {
     await signInCreateUser();
+
+    renderComponent('RHtycU1XmYg8aUvkNor5');
+
+    await screen.findByText(/carregando.../i);
+
+    const listTitle = await screen.findByRole('textbox', { name: /List name/i });
+    expect(listTitle).toHaveValue('List to create items');
+    await screen.findByRole('button', { name: /Create/i });
+    const listItems = screen.queryAllByRole('listitem');
+    expect(listItems).toHaveLength(0);
+  });
+
+  test('should redirect to home if user not allowed', async () => {
+    await signInEmptyUser();
+
+    renderComponent('RHtycU1XmYg8aUvkNor5');
+
+    await screen.findByText(/carregando.../i);
+
+    await screen.findByText(/home/i);
+  });
+
+  test('should redirect to home if listId is empty', async () => {
+    await signInEmptyUser();
 
     renderComponent();
 
-    await screen.findByRole('textbox', { name: /List name/i });
-    await screen.findByRole('button', { name: /Save/i });
+    await screen.findByText(/home/i);
   });
 });

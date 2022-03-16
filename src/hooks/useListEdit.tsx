@@ -1,26 +1,35 @@
-import { useReducer } from 'react';
-import { addDoc } from 'firebase/firestore';
+import { useEffect, useReducer } from 'react';
+import {
+  addDoc,
+  // types
+  FirestoreError,
+} from 'firebase/firestore';
 import dayjs from 'dayjs';
 
-import { DocumentUUID, List, ListInput } from '../types';
+import { DocumentUUID, List, ListInput, Item, ItemInput } from '../types';
 
 import { getListsCollection } from '../firebase-config';
+
+import { useList } from './useList';
+import { useItems } from './useItems';
 
 import { useUserContext } from '../contexts/UserContext';
 
 export type UseListEdit = [
   (input: ListInput) => Promise<List>,
   {
-    data: List | null;
+    list: List | null;
+    items: Item[] | null;
     loading: boolean;
-    error: Error | null;
+    error: FirestoreError | null;
   }
 ];
 
 type State = {
-  data: List | null;
+  list: List | null;
+  items: Item[] | null;
   loading: boolean;
-  error: Error | null;
+  error: FirestoreError | null;
 };
 
 type Action =
@@ -29,19 +38,20 @@ type Action =
     }
   | {
       type: 'SUCCESS';
-      payload: List;
+      payload: { list: List | null; items: Item[] | null };
     }
   | {
       type: 'ERROR';
-      payload: Error;
+      payload: FirestoreError;
     }
   | {
       type: 'RESET';
     };
 
 const INITIAL_STATE: State = {
-  data: null,
-  loading: false,
+  list: null,
+  items: null,
+  loading: true,
   error: null,
 };
 
@@ -59,7 +69,8 @@ const reducer = (state: State, action: Action) => {
         ...state,
         loading: false,
         error: null,
-        data: action.payload,
+        list: action.payload.list,
+        items: action.payload.items,
       };
     }
 
@@ -82,13 +93,28 @@ const reducer = (state: State, action: Action) => {
 };
 
 export function useListEdit(listId: DocumentUUID): UseListEdit {
-  const { user } = useUserContext();
+  // const { user } = useUserContext();
+  const [list, loadingList, errorList] = useList(listId);
+  const [items, loadingItems, errorItems] = useItems(listId);
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+
+  useEffect(() => {
+    dispatch({
+      type: 'SUCCESS',
+      payload: {
+        list: list || null,
+        items: list ? items || [] : null,
+      },
+    });
+  }, [list, items]);
 
   const mutate = (input: ListInput) => {
     dispatch({ type: 'LOADING' });
 
+    throw Error('NOT YET');
+
+    /*
     return new Promise<List>((resolve, reject) => {
       if (!user?.uid) {
         reject('user not found');
@@ -109,17 +135,25 @@ export function useListEdit(listId: DocumentUUID): UseListEdit {
         .then((docRef) => {
           const returnData = { uid: docRef.id, ...newData };
 
-          dispatch({ type: 'SUCCESS', payload: returnData });
+          // dispatch({ type: 'SUCCESS', payload: returnData });
 
           resolve(returnData);
         })
         .catch((err) => {
           dispatch({ type: 'ERROR', payload: err });
 
-          reject(err as Error);
+          reject(err as FirestoreError);
         });
     });
+    */
   };
 
-  return [mutate, state];
+  return [
+    mutate,
+    {
+      ...state,
+      loading: loadingList || loadingItems || state.loading,
+      error: errorList || errorItems || state.error,
+    },
+  ];
 }

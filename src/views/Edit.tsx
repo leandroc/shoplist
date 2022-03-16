@@ -1,56 +1,33 @@
-import { Navigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Navigate, useParams } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 
-import { useListCreate } from '../hooks/useListCreate';
-
-type ListForm = {
-  list: {
-    name: string;
-  };
-};
+import { ListForm, ListFormProps } from '../components/ListForm';
+import { useListEdit } from '../hooks/useListEdit';
 
 function EditComponent() {
-  const [mutate, { data, loading, error }] = useListCreate();
-  const { register, handleSubmit } = useForm<ListForm>({
-    defaultValues: {
-      list: { name: '' },
-    },
-  });
+  const params = useParams();
+  const [mutate, { list, items, loading, error }] = useListEdit(params.listId || '');
 
-  const handleOnSubmit = async (values: ListForm) => {
-    await mutate(values.list);
+  const handleOnSubmit = async (values: NonNullable<Omit<ListFormProps, 'onSubmit'>>) => {
+    console.log('submteu', values);
   };
 
   if (loading) {
     return <>carregando...</>;
   }
 
+  if (!params.listId || error?.code === 'permission-denied') {
+    return <Navigate to="/" />;
+  }
+
   if (error) {
     return <>ocorreu um erro</>;
   }
 
-  if (data?.uid) {
-    return <Navigate to={`/list/${data.uid}`} />;
-  }
-
   return (
     <Container fluid>
-      <Form onSubmit={handleSubmit((values) => handleOnSubmit(values))}>
-        <Form.Group controlId="list.name" className="pt-3 pb-3">
-          <Form.Label>List name</Form.Label>
-          <Form.Control {...register('list.name')} placeholder="Enter list name" />
-        </Form.Group>
-
-        <div className="d-flex">
-          <div className="ms-auto">
-            <Button type="submit">Create</Button>
-          </div>
-        </div>
-      </Form>
+      <ListForm list={list} items={items} onSubmit={handleOnSubmit} />
     </Container>
   );
 }
