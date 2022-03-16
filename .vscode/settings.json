@@ -3,5 +3,6 @@
   "explorer.experimental.fileNesting.patterns": {
     "package.json": "package-lock.json, .npmrc, .yarnrc, .yarn.lock, .prettierrc, .gitignore, .editorconfig, tsconfig.json",
     "firebase.json": ".firebaserc, storage.rules, firestore.rules, firestore.indexes.json, firebase-debug.log, firestore-debug.log, ui-debug.log"
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

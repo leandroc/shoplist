@@ -13,7 +13,7 @@ type ListForm = {
   };
 };
 
-function CreateComponent() {
+function EditComponent() {
   const [mutate, { data, loading, error }] = useListCreate();
   const { register, handleSubmit } = useForm<ListForm>({
     defaultValues: {
@@ -55,4 +55,4 @@ function CreateComponent() {
   );
 }
 
-export const Create = CreateComponent;
+export const Edit = EditComponent;
