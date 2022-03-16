@@ -47,7 +47,7 @@ describe('<Create />', () => {
     renderComponent();
 
     await screen.findByRole('textbox', { name: /List name/i });
-    await screen.findByRole('button', { name: /Save/i });
+    await screen.findByRole('button', { name: /Create/i });
   });
 
   test('should create a list and redirect to the editing page', async () => {
@@ -61,7 +61,7 @@ describe('<Create />', () => {
     UserEvent.clear(listName);
     UserEvent.type(listName, newListName);
 
-    const saveButton = await screen.findByRole('button', { name: /Save/i });
+    const saveButton = await screen.findByRole('button', { name: /Create/i });
     UserEvent.click(saveButton);
 
     await screen.findByText(/carregando.../i);

@@ -2,6 +2,8 @@ import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
@@ -40,12 +42,16 @@ function CreateComponent() {
   return (
     <Container fluid>
       <Form onSubmit={handleSubmit((values) => handleOnSubmit(values))}>
-        <Form.Group controlId="list.name">
+        <Form.Group controlId="list.name" className="pt-3 pb-3">
           <Form.Label>List name</Form.Label>
           <Form.Control {...register('list.name')} placeholder="Enter list name" />
         </Form.Group>
 
-        <Button type="submit">Save</Button>
+        <div className="d-flex">
+          <div className="ms-auto">
+            <Button type="submit">Create</Button>
+          </div>
+        </div>
       </Form>
     </Container>
   );

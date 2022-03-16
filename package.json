@@ -28,10 +28,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:emulator": "firebase emulators:exec 'npm run start' --only=auth,firestore,storage --import=./scripts/firebase/emulators/data --ui",
+    "start:emulator": "firebase emulators:exec 'npm run start' --only=auth,firestore --import=./scripts/firebase/emulators/data --ui",
     "build": "react-scripts build",
     "test": "react-scripts test --env=./jest.override.js --detectOpenHandles",
-    "test:emulator": "firebase emulators:exec 'npm run test -- --coverage' --only=auth,firestore,storage --import=./scripts/firebase/emulators/data --ui",
+    "test:emulator": "firebase emulators:exec 'npm run test -- --coverage' --only=auth,firestore --import=./scripts/firebase/emulators/data --ui",
     "eject": "react-scripts eject",
     "emulators": "firebase emulators:start --import=./scripts/firebase/emulators/data --export-on-exit"
   },
