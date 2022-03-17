@@ -26,7 +26,7 @@ describe('<ListForm />', () => {
 
     screen.getByRole('textbox', { name: /List name/i });
 
-    const createButton = screen.getByRole('button', { name: 'Create' });
+    const createButton = screen.getByRole('button', { name: 'Save' });
     expect(createButton).toBeInTheDocument();
 
     screen.getByText(/Items/i);
@@ -71,7 +71,7 @@ describe('<ListForm />', () => {
 
     UserEvent.click(createButton);
 
-    const listItems = screen.queryAllByRole('listitem');
+    const listItems = await screen.findAllByRole('listitem');
     expect(listItems).toHaveLength(2); // the creation form + the new item
 
     expect(listItems[0]).toHaveTextContent(MOCK_ITEM.name)

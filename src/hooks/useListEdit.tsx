@@ -100,13 +100,23 @@ export function useListEdit(listId: DocumentUUID): UseListEdit {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
   useEffect(() => {
-    dispatch({
-      type: 'SUCCESS',
-      payload: {
-        list: list || null,
-        items: list ? items || [] : null,
-      },
-    });
+    let done = false;
+
+    function fn() {
+      if (!done) {
+        dispatch({
+          type: 'SUCCESS',
+          payload: {
+            list: list || null,
+            items: list ? items || [] : null,
+          },
+        });
+
+        done = true;
+      }
+    }
+
+    fn();
   }, [list, items]);
 
   const mutate = (input: ListInput) => {
@@ -147,6 +157,8 @@ export function useListEdit(listId: DocumentUUID): UseListEdit {
     });
     */
   };
+
+
 
   return [
     mutate,

@@ -1,6 +1,8 @@
 import { useForm } from 'react-hook-form';
 
 import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 import { ItemInput } from '../types';
@@ -25,30 +27,38 @@ function ItemFormComponent({ item, onSubmit }: ItemFormProps) {
   };
 
   return (
-    <>
-      <Form.Group controlId="name">
-        <Form.Label>Item name</Form.Label>
-        <Form.Control {...register('name')} placeholder="Enter item name" />
-      </Form.Group>
+    <div className="bg-light border p-3 rounded-2">
+      <Row className="align-items-end">
+        <Col xs={12} md={6} lg={8}>
+          <Form.Group className="mb-3" controlId="name">
+            <Form.Label>Item name</Form.Label>
+            <Form.Control {...register('name')} placeholder="Enter name" />
+          </Form.Group>
+        </Col>
 
-      <Form.Group controlId="quantity">
-        <Form.Label>Quantity</Form.Label>
-        <Form.Control {...register('quantity')} type="number" placeholder="Enter item quantity" />
-      </Form.Group>
+        <Col xs={12} sm={6} md={3} lg={2}>
+          <Form.Group className="mb-3" controlId="quantity">
+            <Form.Label>Quantity</Form.Label>
+            <Form.Control {...register('quantity')} type="number" placeholder="9" />
+          </Form.Group>
+        </Col>
 
-      <Form.Group controlId="value">
-        <Form.Label>Value</Form.Label>
-        <Form.Control {...register('value')} placeholder="Enter item value" />
-      </Form.Group>
+        <Col xs={12} sm={6} md={3} lg={2}>
+          <Form.Group className="mb-3" controlId="value">
+            <Form.Label>Value</Form.Label>
+            <Form.Control {...register('value')} placeholder="9.99" />
+          </Form.Group>
+        </Col>
+      </Row>
 
       <div className="d-flex">
         <div className="ms-auto">
-          <Button disabled={!onSubmit} onClick={handleOnSubmit}>
+          <Button className="mb-3" disabled={!onSubmit} onClick={handleOnSubmit}>
             Add to list
           </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -44,9 +44,9 @@ function ListFormComponent({ list, items, onSubmit }: ListFormProps) {
       <fieldset>
         <legend>Items</legend>
 
-        <ul>
+        <ul className="list-unstyled">
           {itemsList.map((item) => (
-            <li key={item.name}>{item.name}</li>
+            <li key={item.name} className="pb-3">{item.name}</li>
           ))}
 
           <li>
@@ -58,7 +58,7 @@ function ListFormComponent({ list, items, onSubmit }: ListFormProps) {
       <div className="d-flex">
         <div className="ms-auto">
           <Button disabled={!onSubmit} onClick={handleOnSubmit}>
-            Create
+            Save
           </Button>
         </div>
       </div>

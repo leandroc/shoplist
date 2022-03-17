@@ -41,7 +41,7 @@ const renderComponent = (listId?: string) => {
 };
 
 describe('<Edit />', () => {
-  test.skip('should render the form with an empty items list', async () => {
+  test('should render the form with an empty items list', async () => {
     await signInCreateUser();
 
     renderComponent('RHtycU1XmYg8aUvkNor5');
@@ -50,9 +50,13 @@ describe('<Edit />', () => {
 
     const listTitle = await screen.findByRole('textbox', { name: /List name/i });
     expect(listTitle).toHaveValue('List to create items');
-    await screen.findByRole('button', { name: /Create/i });
+
+    await screen.findByText(/Items/i);
+
+    await screen.findByRole('button', { name: /Save/i });
+
     const listItems = screen.queryAllByRole('listitem');
-    expect(listItems).toHaveLength(0);
+    expect(listItems).toHaveLength(1); // just the creation form
   });
 
   test('should redirect to home if user not allowed', async () => {

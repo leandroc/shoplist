@@ -32,7 +32,8 @@ export const itemConverter: FirestoreDataConverter<Item> = {
     const data = snapshot.data(options);
 
     return {
-      ref: snapshot.ref,
+      // ref: snapshot.ref,
+      ref: {} as any,
 
       uid: snapshot.id,
       createdAt: data.createdAt,
